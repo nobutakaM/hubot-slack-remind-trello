@@ -3,8 +3,9 @@
 
 schedule = require('node-schedule')
 Trello = require('node-trello')
+Slack = require('slack-node')
 moment = require('moment')
-config = require('../configs/config.json')
+config = JSON.parse(process.env.HUBOT_CONFIG_JSON)
 
 trello = new Trello(
   process.env.HUBOT_TRELLO_KEY,
@@ -46,7 +47,7 @@ module.exports = (robot) => {
       }
   })
 
-  robot.hear(/\bslack members/i, () =>{
+  robot.hear(/\bslack members/i, (res) =>{
     slack.api("users.list", {}, (err, data) => {
       if(err){
         robot.send(err)
@@ -55,21 +56,21 @@ module.exports = (robot) => {
 
       var msg = "\nSlackメンバー情報！\n"
       msg += data.members.map(m => `名前：${m.profile.real_name} Slack ID：${m.id}`).join([separator = '\n'])
-      robot.send({ room: board.channel }, msg)
+      robot.send({ room: res.envelope.room }, msg)
     })
   })
 
-  robot.hear(/\btrello members/i, () =>{
+  robot.hear(/\btrello members/i, (res) =>{
     var msg = "\nTrelloメンバー情報！\n"
     for(board of config.boards){
-      trello.get(`/1/boards/${board}/members`, {}, (err, data) => {
+      trello.get(`/1/boards/${board.boardId}/members`, {}, (err, data) => {
         if(err){
           robot.send(err)
           return
         }
-        msg += data.members.map(m => `名前：${m.fullName} Trello ID：${m.id} Slack ID：${config.members[m.id]}`).join([separator = '\n'])
+        msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id} Slack ID：${config.members[m.id]}`).join([separator = '\n'])
       })
     }
-    robot.send({ room: board.channel }, msg)
+    robot.send({ room: res.envelope.room }, msg)
   })
 }
