@@ -6,11 +6,24 @@
 npm install
 ```
 
-## env
+## heroku
+
+### .env
 
 ```
-HUBOT_SLACK_TOKEN: //Slackトークン
-HUBOT_TRELLO_KEY: //Trelloキー
-HUBOT_TRELLO_TOKEN: //Trelloトークン
-HUBOT_CONFIG_JSON: //Json String
+HUBOT_SLACK_TOKEN: //slack token
+HUBOT_TRELLO_KEY: //trello key
+HUBOT_TRELLO_TOKEN: //trello token
+HUBOT_CONFIG_JSON: /** json string
+{
+  "members":{(trello member id):(slack member id)},
+  "boards":[
+    {
+      "boardId": (trello target board id),
+      "lists":[(trello target list id), ... ],
+      "channel": (slack channel)
+    }, ...
+  ],
+  "remindDays":(days)
+} **/
 ```
