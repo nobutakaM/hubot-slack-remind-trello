@@ -69,9 +69,12 @@ module.exports = (robot) => {
         }
         var msg = `\nTrelloメンバー情報！\nボードID：${board.boardId}\n`
         msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id}`).join([separator = '\n'])
-        console.log(msg)
         robot.send({ room: res.envelope.room }, msg)
       })
     }
+  })
+
+  robot.hear(/\benv/i, (res) =>{
+    robot.send({ room: res.envelope.room }, config)
   })
 }
