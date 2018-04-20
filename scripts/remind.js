@@ -79,7 +79,7 @@ module.exports = (robot) => {
   })
 
   robot.hear(/\bset members\s+(\S+)/i, (res) =>{
-    config.members = res.match[1]
+    config.members = JSON.parse(res.match[1])
     process.env.HUBOT_CONFIG_JSON = JSON.stringify(config)
     robot.send({ room: res.envelope.room }, `\`\`\`${process.env.HUBOT_CONFIG_JSON}\`\`\``)
   })
