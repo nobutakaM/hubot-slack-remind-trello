@@ -70,6 +70,7 @@ module.exports = (robot) => {
         }
         data.map((m) => {
           console.log(m)
+          console.log(m.fullName)
         })
         msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id}`).join([separator = '\n'])
       })
