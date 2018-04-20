@@ -79,6 +79,6 @@ module.exports = (robot) => {
   })
 
   robot.hear(/\bset env\s+(\S+)/i, (res) =>{
-    console.log(res)
+    console.log(res.match[1])
   })
 }
