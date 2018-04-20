@@ -75,10 +75,10 @@ module.exports = (robot) => {
   })
 
   robot.hear(/\bshow env/i, (res) =>{
-    robot.send({ room: res.envelope.room }, JSON.stringify(config))
+    robot.send({ room: res.envelope.room }, `\`\`\`JSON.stringify(config)\`\`\``)
   })
 
-  robot.hear(/\bset env/i, (res) =>{
+  robot.hear(/\bset env\s+(\S+)/i, (res) =>{
     console.log(res)
   })
 }
