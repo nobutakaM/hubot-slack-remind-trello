@@ -41,7 +41,7 @@ remindBoard = (robot, board) => {
 }
 
 module.exports = (robot) => {
-  schedule = new schedule.scheduleJob('00 12 */1 * *', () => {
+  schedule = new schedule.scheduleJob(config.schedule, () => {
       for(board of config.boards){
         remindBoard(robot,board)
       }
@@ -64,6 +64,7 @@ module.exports = (robot) => {
     var msg = "\nTrelloメンバー情報！\n"
     for(board of config.boards){
       trello.get(`/1/boards/${board.boardId}/members`, {}, (err, data) => {
+        console.log(board)
         if(err){
           robot.send(err)
           return
