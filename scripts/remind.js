@@ -74,7 +74,11 @@ module.exports = (robot) => {
     }
   })
 
-  robot.hear(/\benv/i, (res) =>{
-    robot.send({ room: res.envelope.room }, config)
+  robot.hear(/\bshow env/i, (res) =>{
+    robot.send({ room: res.envelope.room }, JSON.stringify(config))
+  })
+
+  robot.hear(/\bset env/i, (res) =>{
+    console.log(res)
   })
 }
