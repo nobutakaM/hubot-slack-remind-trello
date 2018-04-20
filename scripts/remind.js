@@ -61,16 +61,17 @@ module.exports = (robot) => {
   })
 
   robot.hear(/\btrello members/i, (res) =>{
-    var msg = "\nTrelloメンバー情報！\n"
     for(board of config.boards){
       trello.get(`/1/boards/${board.boardId}/members`, {}, (err, data) => {
         if(err){
           robot.send(err)
           return
         }
-        msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id}\n`).join()
+        var msg = `\nTrelloメンバー情報！\nボードID：${board.boardId}\n`
+        msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id}`).join([separator = '\n'])
+        console.log(msg)
+        robot.send({ room: res.envelope.room }, msg)
       })
     }
-    robot.send({ room: res.envelope.room }, msg)
   })
 }
