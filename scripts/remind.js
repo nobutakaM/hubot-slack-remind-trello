@@ -64,11 +64,11 @@ module.exports = (robot) => {
     var msg = "\nTrelloメンバー情報！\n"
     for(board of config.boards){
       trello.get(`/1/boards/${board.boardId}/members`, {}, (err, data) => {
-        console.log(board)
         if(err){
           robot.send(err)
           return
         }
+        console.log(data)
         msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id} Slack ID：${config.members[m.id]}`).join([separator = '\n'])
       })
     }
