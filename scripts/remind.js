@@ -69,7 +69,7 @@ module.exports = (robot) => {
           return
         }
         console.log(data)
-        msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id} Slack ID：${config.members[m.id]}`).join([separator = '\n'])
+        msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id}`).join([separator = '\n'])
       })
     }
     robot.send({ room: res.envelope.room }, msg)
