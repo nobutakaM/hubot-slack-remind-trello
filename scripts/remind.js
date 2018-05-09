@@ -30,7 +30,6 @@ remindBoard = (robot, board) => {
           mention = card.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
           attachments = [
             {
-              fallback: 'Trelloメンバー情報！',
               color: '#c30',
               pretext: `${mention} タスクの期限が近づいています！`,
               title: `${card.name}`,
