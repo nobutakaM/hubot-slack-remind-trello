@@ -69,7 +69,24 @@ module.exports = (robot) => {
         }
         var msg = `\nTrelloメンバー情報！\nボードID：${board.boardId}\n`
         msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id}`).join([separator = '\n'])
-        robot.send({ room: res.envelope.room }, msg)
+        attachments = [
+          {
+            fallback: 'Trelloメンバー情報！',
+            color: '#c30',
+            pretext: 'Trelloメンバー情報！',
+            fields: [
+              {
+                title: 'Command',
+                value: 'cap staging deploy',
+                short: false
+              }
+            ],
+            footer: 'hubot',
+            footer_icon: 'https://hubot.github.com/assets/images/layout/hubot-avatar@2x.png'
+          }
+        ]
+        options = { as_user: true, link_names: 1, attachments: attachments }
+        robot.send({ room: res.envelope.room }, '', options)
       })
     }
   })
