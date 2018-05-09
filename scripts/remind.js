@@ -28,12 +28,24 @@ remindBoard = (robot, board) => {
 
         if (diff >= 0 && diff <= config.remindDays) {
           mention = card.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
-          robot.send({ room: board.channel }, `
-          ${mention}
-          以下のタスクの期限が近づいています！
-          タイトル：${card.name}
-          期限：${due.format("YYYY/MM/DD h:mm A")}
-          URL：${card.url}`)
+          attachments = [
+            {
+              fallback: 'Trelloメンバー情報！',
+              color: '#c30',
+              pretext: `${mention} タスクの期限が近づいています！`,
+              title: `${card.name}`,
+              title_link: `${card.url}`,
+              fields: [
+                {
+                  title: '期限',
+                  value: `${due.format("YYYY/MM/DD h:mm A")}`,
+                  short: true
+                }
+              ]
+            }
+          ]
+          options = { attachments: attachments }
+          robot.send({ room: board.channel }, '', options)
         }
       }
     }
@@ -73,7 +85,7 @@ module.exports = (robot) => {
           {
             fallback: 'Trelloメンバー情報！',
             color: '#c30',
-            pretext: '<@U9BU0UUQM> Trelloメンバー情報！',
+            pretext: 'Trelloメンバー情報！',
             title: "Ticket #1943: Can't reset my password",
             title_link: "https://groove.hq/path/to/ticket/1943",
             fields: [
