@@ -73,7 +73,7 @@ module.exports = (robot) => {
           {
             fallback: 'Trelloメンバー情報！',
             color: '#c30',
-            pretext: 'Trelloメンバー情報！',
+            pretext: '<@U9BU0UUQM> Trelloメンバー情報！',
             title: "Ticket #1943: Can't reset my password",
             title_link: "https://groove.hq/path/to/ticket/1943",
             fields: [
