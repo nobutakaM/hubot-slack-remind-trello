@@ -74,18 +74,18 @@ module.exports = (robot) => {
             fallback: 'Trelloメンバー情報！',
             color: '#c30',
             pretext: 'Trelloメンバー情報！',
+            title: "Ticket #1943: Can't reset my password",
+            title_link: "https://groove.hq/path/to/ticket/1943",
             fields: [
               {
-                title: 'Command',
+                title: '期限：',
                 value: 'cap staging deploy',
-                short: false
+                short: true
               }
-            ],
-            footer: 'hubot',
-            footer_icon: 'https://hubot.github.com/assets/images/layout/hubot-avatar@2x.png'
+            ]
           }
         ]
-        options = { as_user: true, link_names: 1, attachments: attachments }
+        options = { attachments: attachments }
         robot.send({ room: res.envelope.room }, '', options)
       })
     }
