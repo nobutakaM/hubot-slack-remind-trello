@@ -20,9 +20,9 @@ remindBoardMessage = (list, title, callback) => {
             mention = m.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
             return {
               color: '#7CD197',
-              title: ${m.name},
-              title_link: ${m.url},
-              text: ${mention}
+              title: m.name,
+              title_link: m.url,
+              text: mention
             }
         })
      })
