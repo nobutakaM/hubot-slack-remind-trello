@@ -14,7 +14,39 @@ trello = new Trello(
 slack = new Slack(process.env.HUBOT_SLACK_TOKEN)
 now = moment()
 
-remindBoard = (robot, board) => {
+remindTodoBoard = (robot, board, channel) => {
+  trello.get(`/1/boards/${board.boardId}/cards`, {}, (err, data) => {
+    if(err){
+      robot.send(err)
+      return
+    }
+
+    for(card of data){
+      if (board.lists.includes(card.idList)){
+        mention = card.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
+        attachments = [
+          {
+            color: '#c30',
+            pretext: `${mention} タスクがあります！`,
+            title: `${card.name}`,
+            title_link: `${card.url}`,
+            fields: [
+              {
+                title: '期限',
+                value: `${due.format("YYYY/MM/DD h:mm A")}`,
+                short: true
+              }
+            ]
+          }
+        ]
+        options = { attachments: attachments }
+        robot.send({ room: channel }, '', options)
+      }
+    }
+  })
+}
+
+remindBoard = (robot, board, channel) => {
   trello.get(`/1/boards/${board.boardId}/cards`, {}, (err, data) => {
     if(err){
       robot.send(err)
@@ -44,7 +76,7 @@ remindBoard = (robot, board) => {
             }
           ]
           options = { attachments: attachments }
-          robot.send({ room: board.channel }, '', options)
+          robot.send({ room: channel }, '', options)
         }
       }
     }
@@ -54,7 +86,13 @@ remindBoard = (robot, board) => {
 module.exports = (robot) => {
   schedule = new schedule.scheduleJob(config.schedule, () => {
       for(board of config.boards){
-        remindBoard(robot,board)
+        remindBoard(robot,board,board.channel)
+      }
+  })
+  
+  scheduleWeekly = new schedule.scheduleJob(config.scheduleWeekly, () => {
+      for(board of config.boards){
+        remindTodoBoard(robot,board,board.channel)
       }
   })
 
@@ -91,7 +129,13 @@ module.exports = (robot) => {
   
   robot.hear(/\bshow schedule/i, (res) =>{
     for(board of config.boards){
-        remindBoard(robot,board)
+        remindBoard(robot,board,res.envelope.room)
+      }
+  })
+  
+  robot.hear(/\bshow scheduleWeekly/i, (res) =>{
+    for(board of config.boards){
+        remindTodoBoard(robot,board,res.envelope.room)
       }
   })
 
