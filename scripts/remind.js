@@ -14,6 +14,21 @@ trello = new Trello(
 slack = new Slack(process.env.HUBOT_SLACK_TOKEN)
 now = moment()
 
+remindBoardMessage = (list, title, callback) => {
+  if( list.size() > 0 ){
+    callback({ attachments: [
+      {
+        color: '#c30',
+        pretext: list.map((m) => {
+            mention = m.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
+            return `${mention} ${card.name}\n`
+        }).join(''),
+        title: title,
+      }
+    ]})
+  }
+}
+
 remindTodoBoard = (robot, board, channel) => {
   trello.get(`/1/boards/${board.boardId}/cards`, {}, (err, data) => {
     if(err){
@@ -22,29 +37,14 @@ remindTodoBoard = (robot, board, channel) => {
     }
 
     // todo
-    var msg = data.filter(m => board.lists[0].includes(m.idList)).map((m) => {
-        mention = m.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
-        return `${mention} ${card.name}\n`
-    }).join('')
-    robot.send({ room: channel }, '', { attachments: [
-      {
-        color: '#c30',
-        pretext: msg,
-        title: 'ToDoタスク',
-      }
-    ]})
+    remindBoardMessage(data.filter(m => board.lists[0].includes(m.idList)),
+                       'ToDoタスク',
+                      function(m){robot.send({ room: channel }, '', m})
     // 作業中
-    var msg = data.filter(m => board.lists[1].includes(m.idList)).map((m) => {
-        mention = m.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
-        return `${mention} ${card.name}\n`
-    }).join('')
-    robot.send({ room: channel }, '', { attachments: [
-      {
-        color: '#c30',
-        pretext: msg,
-        title: '作業中タスク',
-      }
-    ]})
+                                  
+    remindBoardMessage(data.filter(m => board.lists[1].includes(m.idList)),
+                       '作業中タスク',
+                      function(m){robot.send({ room: channel }, '', m})
   })
 }
 
