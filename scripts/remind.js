@@ -39,12 +39,12 @@ remindTodoBoard = (robot, board, channel) => {
     // todo
     remindBoardMessage(data.filter(m => board.lists[0].includes(m.idList)),
                        'ToDoタスク',
-                      function(m){robot.send({ room: channel }, '', m})
+                      m => robot.send({ room: channel }, '', m))
     // 作業中
                                   
     remindBoardMessage(data.filter(m => board.lists[1].includes(m.idList)),
                        '作業中タスク',
-                      function(m){robot.send({ room: channel }, '', m})
+                      m => robot.send({ room: channel }, '', m))
   })
 }
 
