@@ -14,7 +14,7 @@ trello = new Trello(
 slack = new Slack(process.env.HUBOT_SLACK_TOKEN)
 now = moment()
 
-remindTodoBoard = (robot, board, channel) => {
+remindTodoBoard = (robot, board, channel, title) => {
   trello.get(`/1/boards/${board.boardId}/cards`, {}, (err, data) => {
     if(err){
       robot.send(err)
@@ -22,19 +22,20 @@ remindTodoBoard = (robot, board, channel) => {
     }
 
     for(card of data){
+      var msg = ''
       if (board.lists.includes(card.idList)){
         mention = card.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
-        attachments = [
-          {
-            color: '#c30',
-            pretext: `${mention} タスクがあります！`,
-            title: `${card.name}`,
-            title_link: `${card.url}`
-          }
-        ]
-        options = { attachments: attachments }
-        robot.send({ room: channel }, '', options)
+        msg += `${mention} ${card.name}\n`
       }
+      attachments = [
+        {
+          color: '#c30',
+          pretext: msg,
+          title: title,
+        }
+      ]
+      options = { attachments: attachments }
+      robot.send({ room: channel }, '', options)
     }
   })
 }
@@ -121,9 +122,8 @@ module.exports = (robot) => {
   })
   
   robot.hear(/\bshow scheduleWeekly/i, (res) =>{
-    for(board of config.boards){
-        remindTodoBoard(robot,board,res.envelope.room)
-      }
+    remindTodoBoard(robot, config.boards[0], res.envelope.room, 'todo')
+    remindTodoBoard(robot, config.boards[1], res.envelope.room, '作業中')
   })
 
   robot.hear(/\bset members\s+(\S+)/i, (res) =>{
