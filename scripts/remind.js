@@ -27,16 +27,16 @@ remindTodoBoard = (robot, board, channel, title) => {
         mention = card.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
         msg += `${mention} ${card.name}\n`
       }
-      attachments = [
-        {
-          color: '#c30',
-          pretext: msg,
-          title: title,
-        }
-      ]
-      options = { attachments: attachments }
-      robot.send({ room: channel }, '', options)
     }
+    attachments = [
+      {
+        color: '#c30',
+        pretext: msg,
+        title: title,
+      }
+    ]
+    options = { attachments: attachments }
+    robot.send({ room: channel }, '', options)
   })
 }
 
