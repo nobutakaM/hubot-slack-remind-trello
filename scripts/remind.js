@@ -97,7 +97,7 @@ module.exports = (robot) => {
           }
         ]
         options = { attachments: attachments }
-        robot.send({ room: res.envelope.room }, '', options)
+        robot.send({ room: res.envelope.room }, msg, options)
       })
     }
   })
