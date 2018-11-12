@@ -29,14 +29,7 @@ remindTodoBoard = (robot, board, channel) => {
             color: '#c30',
             pretext: `${mention} タスクがあります！`,
             title: `${card.name}`,
-            title_link: `${card.url}`,
-            fields: [
-              {
-                title: '期限',
-                value: `${due.format("YYYY/MM/DD h:mm A")}`,
-                short: true
-              }
-            ]
+            title_link: `${card.url}`
           }
         ]
         options = { attachments: attachments }
