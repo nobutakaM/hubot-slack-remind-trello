@@ -22,22 +22,29 @@ remindTodoBoard = (robot, board, channel) => {
     }
 
     // todo
-    var msg = ''
-    for(card of data){
-      if (board.lists[0].includes(card.idList)){
-        mention = card.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
-        msg += `${mention} ${card.name}\n`
-      }
-    }
-    attachments = [
+    var msg = data.filter(m => board.lists[0].includes(m.idList)).map((m) => {
+        mention = m.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
+        return `${mention} ${card.name}\n`
+    }).join('')
+    robot.send({ room: channel }, '', { attachments: [
       {
         color: '#c30',
         pretext: msg,
         title: 'ToDoタスク',
       }
-    ]
-    options = { attachments: attachments }
-    robot.send({ room: channel }, '', options)
+    ]})
+    // 作業中
+    var msg = data.filter(m => board.lists[1].includes(m.idList)).map((m) => {
+        mention = m.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
+        return `${mention} ${card.name}\n`
+    }).join('')
+    robot.send({ room: channel }, '', { attachments: [
+      {
+        color: '#c30',
+        pretext: msg,
+        title: '作業中タスク',
+      }
+    ]})
   })
 }
 
