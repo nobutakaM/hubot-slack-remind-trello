@@ -14,12 +14,13 @@ trello = new Trello(
 slack = new Slack(process.env.HUBOT_SLACK_TOKEN)
 now = moment()
 
-remindBoardMessage = (list, title, callback) => {
+remindBoardMessage = (list, title, color, callback) => {
   if( list.length > 0 ){
+    callback({ attachments: [ { pretext: title} ] })
     callback({ attachments: list.map((m) => {
             mention = m.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
             return {
-              color: '#7CD197',
+              color: color,
               title: m.name,
               title_link: m.url,
               text: mention
@@ -39,11 +40,13 @@ remindTodoBoard = (robot, board, channel) => {
     // todo
     remindBoardMessage(data.filter(m => board.lists[0].includes(m.idList)),
                        'ToDoタスク',
+                       'good',
                       m => robot.send({ room: channel }, '', m))
     // 作業中
                                   
     remindBoardMessage(data.filter(m => board.lists[1].includes(m.idList)),
                        '作業中タスク',
+                       'warning',
                       m => robot.send({ room: channel }, '', m))
   })
 }
