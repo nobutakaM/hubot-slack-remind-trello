@@ -88,6 +88,12 @@ module.exports = (robot) => {
   robot.hear(/\bshow env/i, (res) =>{
     robot.send({ room: res.envelope.room }, `\`\`\`${JSON.stringify(config)}\`\`\``)
   })
+  
+  robot.hear(/\bshow schedule/i, (res) =>{
+    for(board of config.boards){
+        remindBoard(robot,board)
+      }
+  })
 
   robot.hear(/\bset members\s+(\S+)/i, (res) =>{
     config.members = JSON.parse(res.match[1])
