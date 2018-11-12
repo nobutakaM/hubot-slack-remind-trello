@@ -15,7 +15,7 @@ slack = new Slack(process.env.HUBOT_SLACK_TOKEN)
 now = moment()
 
 remindBoardMessage = (list, title, callback) => {
-  if( list.size() > 0 ){
+  if( list.length > 0 ){
     callback({ attachments: [
       {
         color: '#c30',
