@@ -80,24 +80,7 @@ module.exports = (robot) => {
         }
         var msg = `\nTrelloメンバー情報！\nボードID：${board.boardId}\n`
         msg += data.map(m => `名前：${m.fullName} Trello ID：${m.id}`).join([separator = '\n'])
-        attachments = [
-          {
-            fallback: 'Trelloメンバー情報！',
-            color: '#c30',
-            pretext: 'Trelloメンバー情報！',
-            title: "Ticket #1943: Can't reset my password",
-            title_link: "https://groove.hq/path/to/ticket/1943",
-            fields: [
-              {
-                title: '期限：',
-                value: 'cap staging deploy',
-                short: true
-              }
-            ]
-          }
-        ]
-        options = { attachments: attachments }
-        robot.send({ room: res.envelope.room }, msg, options)
+        robot.send({ room: res.envelope.room }, msg, {})
       })
     }
   })
