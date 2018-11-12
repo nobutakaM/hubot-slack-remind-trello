@@ -89,12 +89,6 @@ module.exports = (robot) => {
         remindBoard(robot,board,board.channel)
       }
   })
-  
-  scheduleWeekly = new schedule.scheduleJob(config.scheduleWeekly, () => {
-      for(board of config.boards){
-        remindTodoBoard(robot,board,board.channel)
-      }
-  })
 
   robot.hear(/\bslack members/i, (res) =>{
     slack.api("users.list", {}, (err, data) => {
