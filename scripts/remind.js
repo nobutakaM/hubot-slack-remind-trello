@@ -21,11 +21,11 @@ remindTodoBoard = (robot, board, channel, title) => {
       return
     }
 
+    msg += `${mention} ${card.name}\n`
     for(card of data){
       var msg = ''
       if (board.lists.includes(card.idList)){
         mention = card.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
-        msg += `${mention} ${card.name}\n`
       }
     }
     attachments = [
