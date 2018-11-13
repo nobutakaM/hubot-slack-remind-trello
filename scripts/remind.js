@@ -16,14 +16,25 @@ now = moment()
 
 remindBoardMessage = (list, title, color, callback) => {
   if( list.length > 0 ){
-    callback({ attachments: [ { pretext: title} ] })
     callback({ attachments: list.map((m) => {
             mention = m.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
             return {
               color: color,
               title: m.name,
               title_link: m.url,
-              text: mention
+              text: mention,
+              fields: [
+                {
+                  title: '期限',
+                  value: moment(m.due).format("YYYY/MM/DD h:mm A"),
+                  short: true
+                },
+                {
+                  title: title,
+                  value: '',
+                  short: true
+                }
+              ]
             }
         })
      })
