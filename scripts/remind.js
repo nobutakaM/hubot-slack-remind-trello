@@ -17,7 +17,7 @@ now = moment()
 remindBoardMessage = (list, title, color, callback) => {
   if( list.length > 0 ){
     callback({ attachments: list.map((m) => {
-            mention = m.idMembers.map(m => `${config.members[m]} ? <@${config.members[m]}> : ''`).join([separator = ' '])
+            mention = m.idMembers.map(m => `${config.members[m] ? <@config.members[m]> : ''}`).join([separator = ' '])
             return {
               color: color,
               title: m.name,
@@ -31,7 +31,7 @@ remindBoardMessage = (list, title, color, callback) => {
                 },
                 {
                   title: '期限',
-                  value: m.due !== '' ? moment(m.due).format("YYYY/MM/DD h:mm A") : '期限未設定',
+                  value: m.due ? moment(m.due).format("YYYY/MM/DD h:mm A") : '期限未設定',
                   short: true
                 }
               ]
