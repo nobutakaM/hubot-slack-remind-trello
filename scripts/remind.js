@@ -17,7 +17,7 @@ now = moment()
 remindBoardMessage = (list, title, color, callback) => {
   if( list.length > 0 ){
     callback({ attachments: list.map((m) => {
-            mention = m.idMembers.map(m => `${config.members[m] ? <@config.members[m]> : ''}`).join([separator = ' '])
+            mention = m.idMembers.map(m => config.members[m] ? `<@${config.members[m]}>` : '').join([separator = ' '])
             return {
               color: color,
               title: m.name,
