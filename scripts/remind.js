@@ -17,7 +17,7 @@ now = moment()
 remindBoardMessage = (list, title, color, callback) => {
   if( list.length > 0 ){
     callback({ attachments: list.map((m) => {
-            mention = m.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
+            mention = m.idMembers.map(m => `${config.members[m]} ? <@${config.members[m]}> : ''`).join([separator = ' '])
             return {
               color: color,
               title: m.name,
@@ -25,13 +25,13 @@ remindBoardMessage = (list, title, color, callback) => {
               text: mention,
               fields: [
                 {
-                  title: '期限',
-                  value: moment(m.due).format("YYYY/MM/DD h:mm A"),
+                  title: title,
+                  value: '',
                   short: true
                 },
                 {
-                  title: title,
-                  value: '',
+                  title: '期限',
+                  value: m.due !== '' ? moment(m.due).format("YYYY/MM/DD h:mm A") : '期限未設定',
                   short: true
                 }
               ]
@@ -143,7 +143,7 @@ module.exports = (robot) => {
       }
   })
   
-  robot.hear(/\bshow scheduleWeekly/i, (res) =>{
+  robot.hear(/\bshow schedule working/i, (res) =>{
     for(board of config.boards){
         remindTodoBoard(robot,board,res.envelope.room)
       }
