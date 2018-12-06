@@ -99,7 +99,7 @@ remindBoard = (robot, board, channel) => {
           attachments = [
             {
               color: '#c30',
-              pretext: `${mention} タスクの期限が過ぎています！`,
+              pretext: `${mention} *タスクの期限が過ぎています！*:rage:`,
               title: `${card.name}`,
               title_link: `${card.url}`,
               fields: [
