@@ -94,6 +94,26 @@ remindBoard = (robot, board, channel) => {
           options = { attachments: attachments }
           robot.send({ room: channel }, '', options)
         }
+        if (diff < 0) {
+          mention = card.idMembers.map(m => `<@${config.members[m]}>`).join([separator = ' '])
+          attachments = [
+            {
+              color: '#c30',
+              pretext: `${mention} タスクの期限が過ぎています！`,
+              title: `${card.name}`,
+              title_link: `${card.url}`,
+              fields: [
+                {
+                  title: '期限',
+                  value: `${due.format("YYYY/MM/DD h:mm A")}`,
+                  short: true
+                }
+              ]
+            }
+          ]
+          options = { attachments: attachments }
+          robot.send({ room: channel }, '', options)
+        }
       }
     }
   })
